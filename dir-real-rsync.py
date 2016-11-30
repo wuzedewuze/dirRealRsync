@@ -9,9 +9,6 @@ import pyinotify
 
 #防止启动多个的命令
 
-#守护进程方法
-
-
 #进程事件监控执行类
 class EventHandler(ProcessEvent):
 
