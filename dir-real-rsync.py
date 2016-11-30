@@ -24,7 +24,6 @@ class EventHandler(ProcessEvent):
 
     #记录日志的装饰器
     def rsync_log(function):
-        print "in this path"
         def log_closure(self,event):
             function(self,event)       #执行引用的函数
             current_time = time.strftime("%Y-%m-%d_%H:%M:%S",time.localtime())
@@ -72,9 +71,9 @@ def do_monit(monit_path,log_file_path,source_path,des_ip,des_path):
 
 
 if __name__ == "__main__":
-    monit_path = "/home/sftp"
+    monit_path = "/home/frbaosftp"
     log_file_path = "/home/test.log"
-    source_path = "/home/sftp"
+    source_path = "/home/frbaosftp"
     des_ip = "192.168.2.94"
     des_path = "/home"      
     do_monit(monit_path,log_file_path,source_path,des_ip,des_path)
