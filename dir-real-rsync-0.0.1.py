@@ -57,9 +57,10 @@ class EventHandler(ProcessEvent):
 
     @rsync_log
     def process_IN_DELETE(self, event):
-        command = self.rsync_command(self.source_path,self.des_ip,self.des_path)
-        os.system(command)
+        pass
 
+
+    @check_filetype
     @rsync_log
     def process_IN_MODIFY(self, event):
         command = self.rsync_command(self.source_path,self.des_ip,self.des_path)
@@ -72,7 +73,7 @@ class EventHandler(ProcessEvent):
 #主方法，执行调用监控
 def do_monit(monit_path,log_file_path,source_path,des_ip,des_path):
     wm = WatchManager()  #create a watchmanager()
-    mask = pyinotify.IN_DELETE | pyinotify.IN_CREATE | pyinotify.IN_MODIFY  # 需要监控的事件 
+    mask = pyinotify.IN_DELETE | pyinotify.IN_MODIFY  # 需要监控的事件 
     notifier = Notifier(wm, EventHandler(log_file_path,source_path,des_ip,des_path))
     wdd = wm.add_watch(monit_path, mask, rec=True)  # 加入监控，mask，rec递归
     #notifier.loop()    #开始循环监控
