@@ -2,15 +2,11 @@
 #-*-coding:utf-8-*-
 
 import os
+import commands
 import time
 import sys
 from  pyinotify import  WatchManager, Notifier,ProcessEvent,IN_DELETE, IN_CREATE,IN_MODIFY
 import pyinotify
-
-'''
-版本：0.0.2 增加判断文件类型功能
-'''
-
 
 
 #进程事件监控执行类
@@ -37,7 +33,12 @@ class EventHandler(ProcessEvent):
     #检查文件类型的装饰器
     def check_filetype(function):
         def filetype(self,event):
-            
+            checkfilepath = os.path.join(event.path,event.name)
+            print checkfilepath
+            checkcommand = 'file -b --mime-type %s' % checkfilepath
+            filetype = commands.getstatusoutput(checkcommand)
+            if (filetype[1] != 'text/plain'):
+                print "发邮件"
             function(self,event)
         return filetype
 
@@ -77,7 +78,7 @@ def do_monit(monit_path,log_file_path,source_path,des_ip,des_path):
     #notifier.loop()    #开始循环监控
     try:
         #防止启动多个的命令 设置进程号文件就可以防止启动多个
-        notifier.loop(daemonize=False, pid_file='/tmp/pyinotify.pid')
+        notifier.loop(daemonize=True, pid_file='/tmp/pyinotify.pid')
     except pyinotify.NotifierError, err:
         print >> sys.stderr, err
 
