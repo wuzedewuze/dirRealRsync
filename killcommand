@@ -1,0 +1,1 @@
+cat /tmp/pyinotify.pid|xargs kill && rm -f /tmp/pyinotify.pid
